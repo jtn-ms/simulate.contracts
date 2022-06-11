@@ -35,73 +35,78 @@ $ brownie run scripts/simulate_vault.sol --network rinkeby
 ## Tech Stacks
 - Web3
 - ...
-## Results ```brownie run scripts/simulate_AMM(SUM).py```
+## Results ```brownie run --silent scripts/simulate_AMM(SUM).py```
 
 ```
-Token(JTN Token) is deployed at 0x2aEF5De25ee29d9e3Fd4c6da87Bb6607D4A4F958 successfully.
-Token(JNT Token) is deployed at 0x2DE62AA85b95577e9745264Ce46D2a4792249c35 successfully.
-AMM is deployed at 0x8e8Fd8091787eD62bA34EC4aEF61769991c88161 successfully.
-
+Token0(JTN Token) is deployed at 0x85FA27473554Dc7fe6007499f1942d3CF022d896 successfully.
+Token1(JNT Token) is deployed at 0x1d467ABAa5116324a0a40f97ae569eF482e501f7 successfully.
+AMM is deployed at 0x18cD7EA1780d9c59F09A6eED62F264e51f862C25 successfully.
 -----------APPROVE------------------
-
------------ADD(in:{token0:100,token1:100})------------------
+-----------ADD------------------
+Get shares of 200 after depositing 100 100 
 AMM.totalSupply:  200
 AMM.reserve0:  100
 AMM.reserve1:  100
 token0.balanceOf(amm):  100
 token1.balanceOf(amm):  100
 amm.balanceOf(signer):  200
-*******************************1
+******************************* 1
+Get shares of 200 after depositing 100 100 
 AMM.totalSupply:  400
 AMM.reserve0:  200
 AMM.reserve1:  200
 token0.balanceOf(amm):  200
 token1.balanceOf(amm):  200
 amm.balanceOf(signer):  400
-*******************************2
+******************************* 2
+Get shares of 200 after depositing 100 100 
 AMM.totalSupply:  600
 AMM.reserve0:  300
 AMM.reserve1:  300
 token0.balanceOf(amm):  300
 token1.balanceOf(amm):  300
 amm.balanceOf(signer):  600
-*******************************3
-
----------SWAP(in: token0)--------------------
+******************************* 3
+---------SWAP--------------------
+swap 100 token0 with 99 token1
 AMM.totalSupply:  600
 AMM.reserve0:  400
 AMM.reserve1:  201
 token0.balanceOf(amm):  400
 token1.balanceOf(amm):  201
 amm.balanceOf(signer):  600
-*******************************1
+******************************* 1
+swap 100 token0 with 99 token1
 AMM.totalSupply:  600
 AMM.reserve0:  500
 AMM.reserve1:  102
 token0.balanceOf(amm):  500
 token1.balanceOf(amm):  102
 amm.balanceOf(signer):  600
-*******************************2
----------REMOVE(in:{share:100})--------------------
+******************************* 2
+---------REMOVE--------------------
+Get 83 17 at the cost of 100 shares
 AMM.totalSupply:  500
 AMM.reserve0:  417
 AMM.reserve1:  85
 token0.balanceOf(amm):  417
 token1.balanceOf(amm):  85
 amm.balanceOf(signer):  500
-*******************************1
+******************************* 1
+Get 83 17 at the cost of 100 shares
 AMM.totalSupply:  400
 AMM.reserve0:  334
 AMM.reserve1:  68
 token0.balanceOf(amm):  334
 token1.balanceOf(amm):  68
 amm.balanceOf(signer):  400
-*******************************2
+******************************* 2
+Get 83 17 at the cost of 100 shares
 AMM.totalSupply:  300
 AMM.reserve0:  251
 AMM.reserve1:  51
 token0.balanceOf(amm):  251
 token1.balanceOf(amm):  51
 amm.balanceOf(signer):  300
-*******************************3
+******************************* 3
 ```

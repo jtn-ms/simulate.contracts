@@ -29,13 +29,13 @@ signer = accounts[2]
 # create token1
 def deploy_ft_jtn():
     token = JTN.deploy(initial_supply, {'from': signer})
-    print("Token({0}) is deployed at {1} successfully.".format(token.name(),token.address))
+    print("Token0({0}) is deployed at {1} successfully.".format(token.name(),token.address))
     return token 
 
 # create token2
 def deploy_ft_jnt():
     token = JNT.deploy(initial_supply, {'from': signer})
-    print("Token({0}) is deployed at {1} successfully.".format(token.name(),token.address))
+    print("Token1({0}) is deployed at {1} successfully.".format(token.name(),token.address))
     return token 
 
 # create amm    
@@ -65,22 +65,33 @@ def main():
     token0 = deploy_ft_jtn()
     token1 = deploy_ft_jnt()
     amm = deploy_amm(token0.address,token1.address)
+    
     print("-----------APPROVE------------------")
     token0.approve(amm.address,10000, {'from': signer})
     token1.approve(amm.address,10000, {'from': signer})
+    
     print("-----------ADD------------------")
+    token0in,token1in=100,100
     for i in range(3):
-        shares = addLiquidity(amm,amount0=100,amount1=100)
+        shares = addLiquidity(amm,amount0=token0in,amount1=token1in).return_value
+        print("Get shares of {0} after depositing {1} {2} ".format(shares,token0in,token1in))
         query(token0,token1,amm)
-        print("*******************************")
+        print("*******************************",i+1)
+    
     print("---------SWAP--------------------")
+    tokenin=100
     for i in range(2):
-        swap(amm,token0)
+        tokenout = swap(amm,token0,amount=tokenin).return_value
+        print("swap {0} token0 with {1} token1".format(tokenin,tokenout))
         query(token0,token1,amm)
-        print("*******************************")
+        print("*******************************",i+1)
+        
+    
     print("---------REMOVE--------------------")
+    shares = 100
     for i in range(3):
-        removeLiquidity(amm)
+        token0out,token1out = removeLiquidity(amm,share=shares).return_value
+        print("Get {1} {2} at the cost of {0} shares".format(shares,token0out,token1out))
         query(token0,token1,amm)
-        print("*******************************")
+        print("*******************************",i+1)
     
