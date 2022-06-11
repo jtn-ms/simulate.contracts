@@ -35,7 +35,12 @@ $ brownie run scripts/simulate_vault.sol --network rinkeby
 ## Tech Stacks
 - Web3
 - ...
-## Results ```brownie run --silent scripts/simulate_AMM(SUM).py```
+## Preassumption
+- same value: value(token0) == value(token1)
+- same amount input: token0in == token1in when **addLiquidity**(token0In,token1In)
+- Expected output(constants): tokeOout = tokenIn * 997 / 1000 when **swap**(tokenIn)
+## Results ```brownie run --silent scripts/simulate_AMM.py```
+- fails when expected tokenout > reserved tokenOut
 
 ```
 Token0(JTN Token) is deployed at 0x85FA27473554Dc7fe6007499f1942d3CF022d896 successfully.
