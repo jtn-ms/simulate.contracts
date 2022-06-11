@@ -30,7 +30,7 @@ $ brownie run scripts/deploy_cornell_token.sol --network rinkeby
 ```
 $ make test.gas
 >>>
-=============================================================== Gas Profile ================================================================ 
+==================================== Gas Profile ===================================== 
 
 JTN <Contract>
    ├─ constructor -  avg: 634839  avg (confirmed): 634839  low: 634839  high: 634839
@@ -44,12 +44,11 @@ Vault <Contract>
 ```
 $ make simulate.vault
 >>>
-Token(JTN Token) is deployed at 0xeB58f38dc34CAc37788c66294b0AAba9170Ff1f6 successfully.
-Vault is deployed at 0x94c4ca956123A545e72fEC1B5F787086De80b1dC successfully.
+Token(JTN Token) is deployed at 0xD6cBE202Ca75b28c0A103Ae1B36bE0A56D26Cd14 successfully.
+Vault is deployed at 0x4c22Af2d75f8Cb39c8F86D06155ae9c16BD459cC successfully.
 -----------APPROVE------------------
------------signer2randomUser------------------
------------APPROVE------------------
------------randomUser2Vault------------------
+-------signer2randomUser------------------
+-------DEPOSIT<Indirect>(2Vault)--with 100 JTN
 -----------DEPOSIT------------------
 amount(in): 100, shares(out): 100
 vault.totalSupply(shares) 100!=200 token.balanceOf(vault)

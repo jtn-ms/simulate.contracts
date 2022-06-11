@@ -50,11 +50,12 @@ def main():
             print("*******************************", i+1)
             
     else:
-        print("-----------signer2randomUser------------------")
+        token.approve(vault.address,1000, {'from': randomUser})   
+        print("-------signer2randomUser------------------")
         token.transfer(randomUser.address,10000, {'from': signer})
-        print("-----------APPROVE------------------")
-        token.approve(vault.address,1000, {'from': randomUser})    
-        print("-----------randomUser2Vault------------------")
+        
+        indirectDepositAmount = 100
+        print("-------DEPOSIT<Indirect>(2Vault)--with %d JTN"%indirectDepositAmount)
         token.transfer(vault.address,100, {'from': randomUser})
         
         print("-----------DEPOSIT------------------")
