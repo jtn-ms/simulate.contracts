@@ -48,9 +48,9 @@ def test_addLiquidity(amm,signer):
     for i in range(3):
         _sharesTotal = amm.totalSupply()
         shares = amm.addLiquidity(token0in,token1in,{'from': signer}).return_value
+        assert (shares + _sharesTotal) == amm.totalSupply()
         # assert amm.reserve0() == token0.balanceOf(amm.address)
         # assert amm.reserve1() == token1.balanceOf(amm.address)        
-        assert (shares + _sharesTotal) == amm.totalSupply()
 
 def test_swap0(amm,signer,token0,token1):
     tokenIn=100
@@ -77,4 +77,4 @@ def test_removeLiquidity(amm,signer,token0,token1):
         assert amm.reserve0() == token0.balanceOf(amm.address)
         assert amm.reserve1() == token1.balanceOf(amm.address)
         assert (amm.reserve0() + token0out)== _token0Reserve
-        assert (amm.reserve1() + token1out)== _token0Reserve
+        assert (amm.reserve1() + token1out)== _token1Reserve
