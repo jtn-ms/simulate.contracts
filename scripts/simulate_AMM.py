@@ -58,29 +58,39 @@ def check(token0,token1,amm):
     assert amm.reserve0() == token0.balanceOf(amm.address)
     assert amm.reserve1() == token1.balanceOf(amm.address)
 
+def validate(token0,token1,amm,printResult=False):
+    if printResult:
+        query(token0,token1,amm)
+    else:
+        check(token0,token1,amm)
+    
 def amm_addLiquidity(amm,token0,token1,token0in=100,token1in=100,cnt=3):
     print("-----------ADD------------------")
     
     for i in range(cnt):
         shares =  amm.addLiquidity(token0in,token1in,{'from': signer}).return_value
         print("Get shares of {0} after depositing {1} {2} ".format(shares,token0in,token1in))
-        check(token0,token1,amm)
-        print("*******************************",i+1)
+        validate(token0,token1,amm)
+        # print("*******************************",i+1)
 
-def amm_swap(amm,token,tokenin=100,cnt=3):   
+from brownie.convert import EthAddress
+
+def amm_swap(amm,tokenIn,tokenOut,tokenin=100,cnt=3):   
     print("---------SWAP--------------------")
+    
+    iIdx,oIdx = (0,1) if EthAddress(tokenIn.address) == amm.token0() else (1,0)
     for i in range(cnt):
-        tokenout = amm.swap(token.address,tokenin,{'from': signer}).return_value
-        print("swap {0} token0 with {1} token1".format(tokenin,tokenout))
-        print("*******************************",i+1)
+        tokenout = amm.swap(tokenIn.address,tokenin,{'from': signer}).return_value
+        print("swap {0} token{2} with {1} token{3}".format(tokenin,tokenout,iIdx,oIdx))
+        # print("*******************************",i+1)
 
 def amm_removeLiquidity(amm,token0,token1,shares=100,cnt=6):        
     print("---------REMOVE--------------------")
-    for i in range(6):
+    for i in range(cnt):
         token0out,token1out = amm.removeLiquidity(shares,{'from': signer}).return_value
         print("Get {1} {2} at the cost of {0} shares".format(shares,token0out,token1out))
-        check(token0,token1,amm)
-        print("*******************************",i+1)
+        validate(token0,token1,amm)
+        # print("*******************************",i+1)
                        
 def main():      
     token0 = deploy_ft_jtn()
@@ -92,10 +102,8 @@ def main():
     token1.approve(amm.address,10000, {'from': signer})
     
     amm_addLiquidity(amm,token0,token1,token0in=100,token1in=100,cnt=3)
-    amm_swap(amm,token0,tokenin=100,cnt=3)
-    amm_removeLiquidity(amm,token0,token1,shares=100,cnt=6)
-    
-
-    
-
-    
+    amm_swap(amm,token0,token1,tokenin=100,cnt=3)
+    amm_removeLiquidity(amm,token0,token1,shares=100,cnt=3)
+    amm_swap(amm,token1,token0,tokenin=100,cnt=3)
+    print("--------------FINAL----------------")
+    query(token0,token1,amm)
