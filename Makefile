@@ -9,17 +9,14 @@ deploy.token:
 deploy.amm:
 	brownie.exe run .\scripts\deploy_AMM.py
 
-simulate.amm:
+simulate:
 	brownie.exe run --silent .\scripts\simulate_AMM.py
-
-simulate.compare:
-	brownie.exe run --silent .\scripts\simulate_Compare.py
 
 test.gas:
 	brownie.exe test --gas
 
 test:
-	brownie.exe test
+	brownie.exe test .
 
 else
 run.ganache:
@@ -31,12 +28,13 @@ deploy.token:
 deploy.amm:
 	brownie run scripts/deploy_AMM.py
 
-simulate.amm:
+simulate:
 	brownie run --silent scripts/simulate_AMM.py
-
-simulate.amm:
-	brownie run --silent scripts/simulate_Compare.py
 
 test.gas:
 	brownie test --gas
+
+test:
+	brownie test
+
 endif

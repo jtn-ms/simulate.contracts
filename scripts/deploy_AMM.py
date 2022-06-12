@@ -1,4 +1,4 @@
-from brownie import CSAMM, JTN, JNT, NoReserveV
+from brownie import CSAMM, JTN, JNT
 from brownie import accounts
 from web3 import Web3
 
@@ -24,13 +24,7 @@ def deploy_amm(token0_addr, token1_addr):
     print("AMM is deployed at {0} successfully.".format(amm.address))
     return amm
 
-def deploy_ammEx(token0_addr, token1_addr):
-    amm = NoReserveV.deploy(token0_addr,token1_addr, {'from': signer})
-    print("NoReserveV AMM is deployed at {0} successfully.".format(amm.address))
-    return amm
-
 def main():
     token0 = deploy_ft_jtn()
     token1 = deploy_ft_jnt()
     amm = deploy_amm(token0.address,token1.address)
-    ammEx = deploy_ammEx(token0.address,token1.address)

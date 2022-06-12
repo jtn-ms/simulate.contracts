@@ -19,7 +19,7 @@
 #
 #
 
-from brownie import CSAMM, JTN, JNT, NoReserveV
+from brownie import CSAMM, JTN, JNT
 from brownie import accounts
 from web3 import Web3
 
@@ -105,5 +105,5 @@ def main():
     amm_swap(amm,token0,token1,tokenin=100,cnt=3)
     amm_removeLiquidity(amm,token0,token1,shares=100,cnt=3)
     amm_swap(amm,token1,token0,tokenin=100,cnt=3)
-    print("--------------FINAL----------------")
+    print("-----------FINAL--------------------")
     query(token0,token1,amm)

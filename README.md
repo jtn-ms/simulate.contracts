@@ -59,16 +59,11 @@ JNT <Contract>
 JTN <Contract>
    ├─ constructor     -  avg: 634839  avg (confirmed): 634839  low: 634839  high: 634839
    └─ approve         -  avg:  44103  avg (confirmed):  44103  low:  44103  high:  44103
-NoReserveV <Contract>
-   ├─ constructor     -  avg: 758678  avg (confirmed): 758678  low: 758678  high: 758678
-   ├─ addLiquidity    -  avg: 107080  avg (confirmed): 107080  low:  87426  high: 146391
-   ├─ removeLiquidity -  avg:  73296  avg (confirmed):  73296  low:  73296  high:  73296
-   └─ swap            -  avg:  68263  avg (confirmed):  68263  low:  68263  high:  68263
 ```
 
 ## Results ```brownie run --silent scripts/simulate_AMM.py```
 ```
-$ make simulate.amm
+$ make simulate
 >>>
 Token0(JTN Token) is deployed at 0x85FA27473554Dc7fe6007499f1942d3CF022d896 successfully.
 Token1(JNT Token) is deployed at 0x1d467ABAa5116324a0a40f97ae569eF482e501f7 successfully.
