@@ -37,32 +37,44 @@ def amm(token0, token1,signer):
 # def approve(token0,token1,amm,signer):
 #     token0.approve(amm.address,10000, {'from': signer})
 #     token1.approve(amm.address,10000, {'from': signer})
-    
-def test_amm(amm,signer,token0,token1):
-    def addLiquidity(amm,amount0=100,amount1=100):
-        return amm.addLiquidity(amount0,amount1,{'from': signer})
-        
-    def removeLiquidity(amm,share=100):
-        return amm.removeLiquidity(share,{'from': signer})
 
-    def swap(amm,token,amount=100):
-        return amm.swap(token.address,amount,{'from': signer})
-    
+def test_approve(amm,signer,token0,token1):
     print("-----------APPROVE--------------")
     token0.approve(amm.address,10000, {'from': signer})
     token1.approve(amm.address,10000, {'from': signer})
-    
-    print("-----------ADD------------------")
+        
+def test_addLiquidity(amm,signer):
     token0in,token1in=100,100
     for i in range(3):
-        shares = addLiquidity(amm,amount0=token0in,amount1=token1in).return_value
-    
-    print("---------SWAP--------------------")
-    tokenin=100
+        _sharesTotal = amm.totalSupply()
+        shares = amm.addLiquidity(token0in,token1in,{'from': signer}).return_value
+        # assert amm.reserve0() == token0.balanceOf(amm.address)
+        # assert amm.reserve1() == token1.balanceOf(amm.address)        
+        assert (shares + _sharesTotal) == amm.totalSupply()
+
+def test_swap0(amm,signer,token0,token1):
+    tokenIn=100
     for i in range(2):
-        tokenout = swap(amm,token0,amount=tokenin).return_value
-    
-    print("---------REMOVE--------------------")
+        tokenout = amm.swap(token0.address,tokenIn,{'from': signer}).return_value
+        assert tokenIn > tokenout
+        assert amm.reserve0() == token0.balanceOf(amm.address)
+        assert amm.reserve1() == token1.balanceOf(amm.address)    
+
+def test_swap1(amm,signer,token0,token1):
+    tokenIn=100
+    for i in range(2):
+        tokenout = amm.swap(token1.address,tokenIn,{'from': signer}).return_value
+        assert tokenIn > tokenout
+        assert amm.reserve0() == token0.balanceOf(amm.address)
+        assert amm.reserve1() == token1.balanceOf(amm.address)    
+        
+def test_removeLiquidity(amm,signer,token0,token1):
     shares = 100
     for i in range(3):
-        token0out,token1out = removeLiquidity(amm,share=shares).return_value
+        _token0Reserve = token0.balanceOf(amm.address)
+        _token1Reserve = token1.balanceOf(amm.address)  
+        token0out,token1out = amm.removeLiquidity(shares,{'from': signer}).return_value
+        assert amm.reserve0() == token0.balanceOf(amm.address)
+        assert amm.reserve1() == token1.balanceOf(amm.address)
+        assert (amm.reserve0() + token0out)== _token0Reserve
+        assert (amm.reserve1() + token1out)== _token0Reserve
