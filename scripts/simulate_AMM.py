@@ -19,7 +19,7 @@
 #
 #
 
-from brownie import CSAMM, JTN, JNT
+from brownie import CPAMM, JTN, JNT
 from brownie import accounts
 from web3 import Web3
 
@@ -41,7 +41,7 @@ def deploy_ft_jnt():
 
 # create amm    
 def deploy_amm(token0_addr, token1_addr):
-    amm = CSAMM.deploy(token0_addr,token1_addr, {'from': signer})
+    amm = CPAMM.deploy(token0_addr,token1_addr, {'from': signer})
     print("AMM is deployed at {0} successfully.".format(amm.address))
     return amm
 
