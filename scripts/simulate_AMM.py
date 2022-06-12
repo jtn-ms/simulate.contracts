@@ -1,25 +1,5 @@
-# [Share Section]
-# uint public totalSupply;
-# mapping(address => uint) public balanceOf;
-# _mint()
-# _burn() 
-#
-# [Liquidity Section]
-# token = IERC20(_token);
-#
-# [BASE EQUATION]
-# shares/totalSupply ==token0+1in/token0+1.balanceOf(address(this))
-# if token.balanceOf(address(vault)) == vault.totalSupply
-# shares == amount
-# 
-# [deposit]
-# shares = (amount_in * totalSupply) / token.balanceOf(address(this));
-# [withdraw]
-# amount = (shares_out * token.balanceOf(address(this))) / totalSupply;
-#
-#
 
-from brownie import CSAMM, JTN, JNT
+from brownie import StableSwap, JTN, JNT
 from brownie import accounts
 from web3 import Web3
 
@@ -41,7 +21,7 @@ def deploy_ft_jnt():
 
 # create amm    
 def deploy_amm(token0_addr, token1_addr):
-    amm = CSAMM.deploy(token0_addr,token1_addr, {'from': signer})
+    amm = StableSwap.deploy(token0_addr,token1_addr, {'from': signer})
     print("AMM is deployed at {0} successfully.".format(amm.address))
     return amm
 

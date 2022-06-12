@@ -1,6 +1,6 @@
 
 import pytest
-from brownie import CSAMM, JTN, JNT
+from brownie import StableSwap, JTN, JNT
 from brownie import accounts
 from web3 import Web3
 
@@ -29,7 +29,7 @@ def token1(initial_supply,signer):
 # create amm   
 @pytest.fixture(scope="module")
 def amm(token0, token1,signer):
-    amm = CSAMM.deploy(token0.address,token1.address, {'from': signer})
+    amm = StableSwap.deploy(token0.address,token1.address, {'from': signer})
     print("AMM is deployed at {0} successfully.".format(amm.address))
     return amm
 
