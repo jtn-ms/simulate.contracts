@@ -44,7 +44,13 @@ def deploy_amm(token0_addr, token1_addr):
     amm = CSAMM.deploy(token0_addr,token1_addr, {'from': signer})
     print("AMM is deployed at {0} successfully.".format(amm.address))
     return amm
-  
+
+def deploy_ammEx(token0_addr, token1_addr):
+    amm = NoReserveV.deploy(token0_addr,token1_addr, {'from': signer})
+    print("NoReserveV AMM is deployed at {0} successfully.".format(amm.address))
+    return amm
+
+    
 def main():   
     def query(token0,token1,amm):
         print("AMM.totalSupply: ",amm.totalSupply())
@@ -54,6 +60,14 @@ def main():
         print("token1.balanceOf(amm): ", token1.balanceOf(amm.address))   
         print("amm.balanceOf(signer): ", amm.balanceOf(signer))
 
+    def queryEx(token0,token1,amm,ammEx):
+        print("amm|ammEx.totalSupply: {0}|{1}".format(amm.totalSupply(),ammEx.totalSupply()))
+        print("amm.reserve0: {0}".format(amm.reserve0()))
+        print("amm.reserve1: {0}".format(amm.reserve1()))
+        print("token0.balanceOf(amm|ammEx): {0}|{1}".format(token0.balanceOf(amm.address),token0.balanceOf(ammEx.address)))
+        print("token1.balanceOf(amm|ammEx): {0}|{1}".format(token1.balanceOf(amm.address),token1.balanceOf(ammEx.address)))
+        print("amm|ammEx.balanceOf(signer): {0}|{1}".format(amm.balanceOf(signer),ammEx.balanceOf(signer)))
+        
     def addLiquidity(amm,amount0=100,amount1=100):
         return amm.addLiquidity(amount0,amount1,{'from': signer})
         
@@ -66,25 +80,30 @@ def main():
     token0 = deploy_ft_jtn()
     token1 = deploy_ft_jnt()
     amm = deploy_amm(token0.address,token1.address)
+    ammEx = deploy_ammEx(token0.address,token1.address)
     
     print("-----------APPROVE------------------")
     token0.approve(amm.address,10000, {'from': signer})
     token1.approve(amm.address,10000, {'from': signer})
+    token0.approve(ammEx.address,10000, {'from': signer})
+    token1.approve(ammEx.address,10000, {'from': signer})  
     
     print("-----------ADD------------------")
     token0in,token1in=100,100
     for i in range(3):
         shares = addLiquidity(amm,amount0=token0in,amount1=token1in).return_value
-        print("Get shares of {0} after depositing {1} {2} ".format(shares,token0in,token1in))
-        query(token0,token1,amm)
+        sharesEx = addLiquidity(ammEx,amount0=token0in,amount1=token1in).return_value
+        print("ADD: Get shares of {0}|{1}(amm|ammEx) after depositing {2} {3} ".format(shares,sharesEx, token0in,token1in))
+        queryEx(token0,token1,amm,ammEx)
         print("*******************************",i+1)
     
     print("---------SWAP--------------------")
     tokenin=100
     for i in range(3):
         tokenout = swap(amm,token0,amount=tokenin).return_value
-        print("swap {0} token0 with {1} token1".format(tokenin,tokenout))
-        query(token0,token1,amm)
+        tokenoutEx = swap(ammEx,token0,amount=tokenin).return_value
+        print("SWAP: Get token1 of  {0}|{1}(amm|ammEx) in return for token0 of {2}".format(tokenout,tokenoutEx,tokenin))
+        queryEx(token0,token1,amm,ammEx)
         print("*******************************",i+1)
         
     
@@ -92,7 +111,9 @@ def main():
     shares = 100
     for i in range(6):
         token0out,token1out = removeLiquidity(amm,share=shares).return_value
+        token0outEx,token1outEx = removeLiquidity(ammEx,share=shares).return_value
         print("Get {1} {2} at the cost of {0} shares".format(shares,token0out,token1out))
-        query(token0,token1,amm)
+        print("Get {1} {2} at the cost of {0} shares".format(shares,token0outEx,token1outEx))
+        queryEx(token0,token1,amm,ammEx)
         print("*******************************",i+1)
     

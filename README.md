@@ -35,14 +35,41 @@ $ brownie run scripts/simulate_vault.sol --network rinkeby
 ## Tech Stacks
 - Web3
 - ...
+
 ## Preassumption
 - same value: value(token0) == value(token1)
 - same amount input: token0in == token1in when **addLiquidity**(token0In,token1In)
 - Expected output(constants): tokeOout = tokenIn * 997 / 1000 when **swap**(tokenIn)
-## Results ```brownie run --silent scripts/simulate_AMM.py```
 - fails when expected tokenout > reserved tokenOut
 
+## Gas Profiling ```brownie test --gas```
 ```
+$ make test.gas
+>>>
+======================================= Gas Profile ======================================       
+
+CSAMM <Contract>
+   ├─ constructor     -  avg: 711239  avg (confirmed): 711239  low: 711239  high: 711239
+   ├─ addLiquidity    -  avg: 129867  avg (confirmed): 129867  low: 100748  high: 188107
+   ├─ removeLiquidity -  avg:  79741  avg (confirmed):  79741  low:  79741  high:  79741
+   └─ swap            -  avg:  75643  avg (confirmed):  75643  low:  75643  high:  75643
+JNT <Contract>
+   ├─ constructor     -  avg: 634839  avg (confirmed): 634839  low: 634839  high: 634839
+   └─ approve         -  avg:  44103  avg (confirmed):  44103  low:  44103  high:  44103
+JTN <Contract>
+   ├─ constructor     -  avg: 634839  avg (confirmed): 634839  low: 634839  high: 634839
+   └─ approve         -  avg:  44103  avg (confirmed):  44103  low:  44103  high:  44103
+NoReserveV <Contract>
+   ├─ constructor     -  avg: 758678  avg (confirmed): 758678  low: 758678  high: 758678
+   ├─ addLiquidity    -  avg: 107080  avg (confirmed): 107080  low:  87426  high: 146391
+   ├─ removeLiquidity -  avg:  73296  avg (confirmed):  73296  low:  73296  high:  73296
+   └─ swap            -  avg:  68263  avg (confirmed):  68263  low:  68263  high:  68263
+```
+
+## Results ```brownie run --silent scripts/simulate_AMM.py```
+```
+$ make simulate.amm
+>>>
 Token0(JTN Token) is deployed at 0x85FA27473554Dc7fe6007499f1942d3CF022d896 successfully.
 Token1(JNT Token) is deployed at 0x1d467ABAa5116324a0a40f97ae569eF482e501f7 successfully.
 AMM is deployed at 0x18cD7EA1780d9c59F09A6eED62F264e51f862C25 successfully.
