@@ -3,14 +3,12 @@ ifeq ($(OS),Windows_NT)
 run.ganache:
 	ganache-cli.cmd --port 8545 --gasLimit 12000000 --accounts 10 --hardfork istanbul --mnemonic brownie
 
-deploy.token:
-	brownie.exe run .\scripts\deploy_SimpleToken.py
 
-deploy.vault:
-	brownie.exe run .\scripts\deploy_Vault.py
+deploy:
+	brownie.exe run .\scripts\deploy.py
 
-simulate.vault:
-	brownie.exe run --silent .\scripts\simulate_vault.py
+simulate:
+	brownie.exe run --silent .\scripts\simulate.py
 
 test.gas:
 	brownie.exe test --gas
@@ -22,14 +20,11 @@ else
 run.ganache:
 	ganache-cli --port 8545 --gasLimit 12000000 --accounts 10 --hardfork istanbul --mnemonic brownie
 
-deploy.token:
-	brownie run scripts/deploy_SimpleToken.py
+deploy:
+	brownie run scripts/deploy.py
 
-deploy.vault:
-	brownie run scripts/deploy_Vault.py
-
-simulate.vault:
-	brownie run --silent scripts/simulate_vault.py
+simulate:
+	brownie run --silent scripts/simulate.py
 
 test.gas:
 	brownie test --gas
