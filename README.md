@@ -21,12 +21,12 @@ $ brownie compile
 
 # deploy and/or simulate on localnet
 ## deploy
-$ brownie run scripts/deploy_AMM.py
+$ brownie run scripts/deploy_Staking.py
 ## simulate
-$ brownie run scripts/simulate_AMM.py
+$ brownie run scripts/simulate_Staking.py
 
 # simulate on testnet
-$ brownie run scripts/simulate_AMM.sol --network rinkeby
+$ brownie run scripts/simulate_Staking.sol --network rinkeby
 
 ```
 ## Toolkits
@@ -48,48 +48,54 @@ $ make test.gas
 >>>
 ======================================= Gas Profile ======================================       
 
-CPAMM <Contract>
+StakingRewards <Contract>
    ├─ constructor     -  avg: 774716  avg (confirmed): 774716  low: 774716  high: 774716
    ├─ addLiquidity    -  avg: 133599  avg (confirmed): 133599  low: 104287  high: 192226
    ├─ swap            -  avg:  75897  avg (confirmed):  75897  low:  75875  high:  75943
    └─ removeLiquidity -  avg:  66451  avg (confirmed):  66451  low:  39871  high:  79741
-JNT <Contract>
+RewardToken <Contract>
    ├─ constructor     -  avg: 634839  avg (confirmed): 634839  low: 634839  high: 634839
    └─ approve         -  avg:  44103  avg (confirmed):  44103  low:  44103  high:  44103
-JTN <Contract>
+StakingToken <Contract>
    ├─ constructor     -  avg: 634839  avg (confirmed): 634839  low: 634839  high: 634839
    └─ approve         -  avg:  44103  avg (confirmed):  44103  low:  44103  high:  44103
 ```
 
-## Results ```brownie run --silent scripts/simulate_AMM.py```
+## Results ```brownie run --silent scripts/simulate_Staking.py```
 ```
 $ make simulate
 >>>
-Token0(JTN Token) is deployed at 0x0Bc0060Ae43892BE7E5Ce7eE6022Fc218d6418AA successfully.
-Token1(JNT Token) is deployed at 0x7220d9FA0D2fBd790c081Eb5CB3301D728Ef42CC successfully.
-AMM is deployed at 0x2F06Ef2B7E40520b0950E802586c04D4C9eD6Bea successfully.
------------APPROVE------------------
------------ADD------------------
-Get shares of 100 after depositing 100 100 
-Get shares of 100 after depositing 100 100 
-Get shares of 100 after depositing 100 100 
----------SWAP--------------------
-swap 100 token0 with 74 token1
-swap 100 token0 with 44 token1
-swap 100 token0 with 30 token1
----------REMOVE--------------------
-Get 200 50 at the cost of 100 shares
-Get 200 51 at the cost of 100 shares
-Get 200 51 at the cost of 100 shares
----------SWAP--------------------
-swap 100 token1 with 0 token0
-swap 100 token1 with 0 token0
-swap 100 token1 with 0 token0
------------FINAL--------------------
-AMM.totalSupply:  0
-AMM.reserve0:  0
-AMM.reserve1:  300
-token0.balanceOf(amm):  0
-token1.balanceOf(amm):  300
-amm.balanceOf(signer):  0
+Token0(Staking Token) is deployed at 0x147fb73B3CFa853cf9E047aD807099744832f87a successfully.
+Token1(Reward Token) is deployed at 0x014Aab1ACc1A9Bb776F6c0805D21DF201494eE11 successfully.
+Staking is deployed at 0x4D18a1B8E243138d602945482531197eA2218A72 successfully.
+===========APPROVE===================
+===========CHARGE(RewardToken)=======
+
+===========BEGIN===================
+
+-----------Stake------------------
+Earned(0x0063): 0 
+rewardPerToken: 0
+Earned(0x0063): 0 
+rewardPerToken: 0
+Earned(0x0063): 100 
+rewardPerToken: 500000000000000000
+Earned(0x0063): 100 
+rewardPerToken: 500000000000000000
+Earned(0x0063): 100 
+rewardPerToken: 500000000000000000
+
+---------GetReward--------------------
+Earned(0x0063): 0 
+rewardPerToken: 833333333333333333
+
+---------Withdraw--------------------
+Earned(0x0063): 0 
+rewardPerToken: 833333333333333333
+Earned(0x0063): 100 
+rewardPerToken: 1333333333333333333
+Earned(0x0063): 100 
+rewardPerToken: 1333333333333333333
+
+===========FINAL====================
 ```

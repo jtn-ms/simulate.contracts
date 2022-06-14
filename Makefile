@@ -6,11 +6,11 @@ run.ganache:
 deploy.token:
 	brownie.exe run .\scripts\deploy_Token.py
 
-deploy.amm:
-	brownie.exe run .\scripts\deploy_AMM.py
+deploy.staking:
+	brownie.exe run .\scripts\deploy_Staking.py
 
 simulate:
-	brownie.exe run --silent .\scripts\simulate_AMM.py
+	brownie.exe run --silent .\scripts\simulate_Staking.py
 
 test.gas:
 	brownie.exe test --gas
@@ -25,11 +25,11 @@ run.ganache:
 deploy.token:
 	brownie run scripts/deploy_Token.py
 
-deploy.amm:
-	brownie run scripts/deploy_AMM.py
+deploy.staking:
+	brownie run scripts/deploy_Staking.py
 
 simulate:
-	brownie run --silent scripts/simulate_AMM.py
+	brownie run --silent scripts/simulate_Staking.py
 
 test.gas:
 	brownie test --gas
